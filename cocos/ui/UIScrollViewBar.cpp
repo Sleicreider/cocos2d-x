@@ -177,7 +177,12 @@ void ScrollViewBar::onEnter()
             return;
     }
 #endif
-    
+
+	/*********************************************************/
+	/* SLEI ENGINE CHANGES */
+	ProtectedNode::setOpacity(_opacity);
+	/*********************************************************/
+
     ProtectedNode::onEnter();
     scheduleUpdate();
 }
