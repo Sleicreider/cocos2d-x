@@ -1,3 +1,9 @@
+Fork from v3.
+Mainly contains changes that I like when developing mobile games.
+Mainly just a vew convenient changes to base objects, bug fixes or lib updates.
+Which I can activly use to work on my games
+
+
 <img src="http://www.cocos2d-x.org/attachments/801/cocos2dx_portrait.png" width=200>
 
 
