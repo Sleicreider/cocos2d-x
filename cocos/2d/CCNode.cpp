@@ -119,6 +119,14 @@ Node::Node()
 #if CC_USE_PHYSICS
 , _physicsBody(nullptr)
 #endif
+
+//===============================================
+// SleiTec Modification
+, bLockActiveAndVisible_(false)
+, bActiveAndVisible_(true)
+, bIsActive_(true)
+//===============================================
+
 {
     // set default scheduler and actionManager
     _director = Director::getInstance();

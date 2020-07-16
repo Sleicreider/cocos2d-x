@@ -2038,7 +2038,51 @@ public:
     
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(Node);
+
+    
+    //#pragma message WARN("ENGINE MODIFICATION")
+    //=========================================================================================
+    // SleiTec modification
+
+public:
+    /**
+    * Sets this node and all its child nodes to active and visible.
+    */
+    void SetActiveAndVisible(bool active_and_visible);
+
+    /**
+    * Locks the node to be affected by parent SetActiveAndVisible calls
+    * Only set on this node, not for its child, SetActiveAndVisible will stop at this node.
+    */
+    void LockActiveAndVisible(bool lock);
+
+    bool IsActiveAndVisibleLocked() const;
+    bool IsActiveAndVisibie() const;
+    bool IsActive() const;
+
+private:
+    void NodeRecursion(Node* node, bool active_and_visible);
+
+private:
+    bool bLockActiveAndVisible_ : 1;
+    bool bActiveAndVisible_ : 1;
+    bool bIsActive_ : 1;
+    //=========================================================================================
 };
+
+//#pragma message WARN("ENGINE MODIFICATION")
+//=========================================================================================
+// SleiTec modification
+
+inline void Node::LockActiveAndVisible(bool lock) { bLockActiveAndVisible_ = lock; };
+
+inline bool Node::IsActiveAndVisibleLocked() const { return bLockActiveAndVisible_; };
+inline bool Node::IsActiveAndVisibie() const { return bActiveAndVisible_ && bIsActive_ && isVisible(); }
+inline bool Node::IsActive() const { return bIsActive_; }
+
+//=========================================================================================
+
+
 
 /**
  * This is a helper function, checks a GL screen point is in content rectangle space.
