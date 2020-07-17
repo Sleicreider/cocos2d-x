@@ -1,7 +1,7 @@
 ### SleiTec Fork from v3. ###
 
 Mainly contains changes that I like when developing mobile games.
-Mainly just a vew convenient changes to base objects, bug fixes or lib updates.
+Mainly just a few convenient changes to base objects, bug fixes or lib updates.
 Which I can activly use to work on my games
 
 
