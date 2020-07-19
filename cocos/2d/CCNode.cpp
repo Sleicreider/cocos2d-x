@@ -1641,6 +1641,11 @@ void Node::unscheduleAllCallbacks()
 
 void Node::resume()
 {
+	//===============================================
+	// SleiTec Modification
+	bIsActive_ = true;
+	//===============================================
+
     _scheduler->resumeTarget(this);
     _actionManager->resumeTarget(this);
     _eventDispatcher->resumeEventListenersForTarget(this);
@@ -1648,6 +1653,11 @@ void Node::resume()
 
 void Node::pause()
 {
+	//===============================================
+	// SleiTec Modification
+	bIsActive_ = false;
+	//===============================================
+
     _scheduler->pauseTarget(this);
     _actionManager->pauseTarget(this);
     _eventDispatcher->pauseEventListenersForTarget(this);
@@ -2236,5 +2246,51 @@ __NodeRGBA::__NodeRGBA()
 {
     CCLOG("NodeRGBA deprecated.");
 }
+
+// #pragma message WARN("ENGINE MODIFICATION")
+//=========================================================================================
+// SleiTec modification
+
+void Node::NodeRecursion(Node* node, bool active_and_visible)
+{
+	node->bActiveAndVisible_ = active_and_visible;
+
+	//if you set it to false and it is locked set it unlocked since we change it
+	//if it enter this function as locked we know SetActiveVisible was directly called on the locked node
+	if (!active_and_visible && node->IsActiveAndVisibleLocked())
+	{
+		node->LockActiveAndVisible(false);
+	}
+
+	if (!active_and_visible)
+	{
+		node->pause();
+		node->setVisible(false);
+	}
+	else
+	{
+		node->resume();
+		node->setVisible(true);
+	}
+
+	auto& children = node->getChildren();
+	for (size_t i = 0; i < children.size(); i++)
+	{
+		auto child = children.at(i);
+		if (!child->IsActiveAndVisibleLocked())
+		{
+			NodeRecursion(child, active_and_visible);
+		}
+	}
+}
+
+void Node::SetActiveAndVisible(bool active_and_visible)
+{
+	//if (node == nullptr) { CCLOGERROR("SetActiveAndVisible didn't work, node is a nullptr"); return; }
+
+	NodeRecursion(this, active_and_visible);
+}
+
+//=========================================================================================
 
 NS_CC_END
